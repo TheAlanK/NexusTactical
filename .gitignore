@@ -1,0 +1,22 @@
+# Build artifacts
+build/
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude/AI prompts
+HANDOFF_PROMPT.md
+CLAUDE.md
+.claude/
+
+# Temp
+sources.txt
+sources_no_console.txt

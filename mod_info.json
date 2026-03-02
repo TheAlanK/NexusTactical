@@ -1,0 +1,14 @@
+{
+  "id": "nexus_tactical",
+  "name": "NexusTactical",
+  "author": "NexusDev",
+  "version": "0.9.0-beta",
+  "description": "Real-time combat fleet status overlay with ship sprites and armor damage visualization. Built on NexusUI.",
+  "gameVersion": "0.98a-RC7",
+  "modPlugin": "com.nexustactical.TacticalModPlugin",
+  "jars": ["jars/NexusTactical.jar"],
+  "dependencies": [
+    {"id": "lw_lazylib", "name": "LazyLib"},
+    {"id": "nexus_ui", "name": "NexusUI"}
+  ]
+}

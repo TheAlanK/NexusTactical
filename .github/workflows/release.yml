@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract mod info
+        id: mod
+        run: |
+          MOD_NAME=$(python3 -c "import json; print(json.load(open('mod_info.json'))['name'])")
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "name=${MOD_NAME}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Building ${MOD_NAME} ${VERSION}"
+
+      - name: Build release zip
+        run: |
+          MOD_NAME="${{ steps.mod.outputs.name }}"
+          VERSION="${{ steps.mod.outputs.version }}"
+
+          mkdir -p "${MOD_NAME}"
+          cp mod_info.json "${MOD_NAME}/"
+          cp -r jars/ "${MOD_NAME}/"
+          [ -d data ] && cp -r data/ "${MOD_NAME}/" || true
+          [ -f LICENSE ] && cp LICENSE "${MOD_NAME}/" || true
+          [ -f README.md ] && cp README.md "${MOD_NAME}/" || true
+
+          zip -r "${MOD_NAME}-${VERSION}.zip" "${MOD_NAME}/"
+          echo "Created ${MOD_NAME}-${VERSION}.zip"
+          ls -la *.zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "${{ steps.mod.outputs.name }} ${{ steps.mod.outputs.version }}"
+          files: "*.zip"
+          generate_release_notes: false
+          body: |
+            ## ${{ steps.mod.outputs.name }} ${{ steps.mod.outputs.version }}
+
+            ### Installation
+            1. Download the zip file below
+            2. Extract to your `Starsector/mods/` folder
+            3. Enable the mod in the launcher

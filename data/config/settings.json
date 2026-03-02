@@ -1,0 +1,5 @@
+{
+  "plugins": {
+    "NexusTacticalCombatTracker": "com.nexustactical.CombatTracker"
+  }
+}
